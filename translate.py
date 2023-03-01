@@ -1,10 +1,11 @@
 from googletrans import Translator
-from langdetect import detect
+from langdetect import detect, LangDetectException
+import random
 
 with open('ciphix NLP/data.csv', 'r') as file:
     text = file.readlines()
 
-text = text[0: len(text) // 10]  # TODO: temp!
+random_subset = random.sample(text, len(text) // 10)  # TODO: Try to convert more into English!
 
 print(len(text))
 translator = Translator()
@@ -14,8 +15,8 @@ for i, line in enumerate(text):
     lang = 'idk'
     try:
         lang = detect(line)
-    except Exception:
-        pass
+    except LangDetectException:
+        pass  # empty string
     if lang == 'en':
         translated.append(line)
     else:
