@@ -2,6 +2,7 @@ import nltk
 import nltk.tokenize
 import nltk.corpus
 import nltk.stem
+import nltk.tag
 import emoji
 import re
 
@@ -13,6 +14,21 @@ def is_url(word):
     :return: Whether the string is an url
     """
     return URL_RE.search(word) is not None
+
+
+def lemmatize(word, tag, lemmatizer):
+    match tag:
+        case 'NOUN':
+            return lemmatizer.lemmatize(word, 'n')
+        case 'VERB':
+            return lemmatizer.lemmatize(word, 'v')
+        case 'ADV':
+            return lemmatizer.lemmatize(word, 'r')
+        case 'ADJ':
+            return lemmatizer.lemmatize(word, 'a')
+        # TODO: what about satellite adjectives? They don't appear in the universal tag set?
+        case _:
+            return word
 
 
 def sanitize_tokenize(lines):
@@ -34,6 +50,9 @@ def sanitize_tokenize(lines):
     except LookupError:
         nltk.download('stopwords')
 
+    nltk.download('averaged_perceptron_tagger')
+    nltk.download('universal_tagset')
+
     stop_words = set(nltk.corpus.stopwords.words('english'))
     stop_words.update(['u', 'dm'])
     lemmatizer = nltk.stem.WordNetLemmatizer()
@@ -47,9 +66,13 @@ def sanitize_tokenize(lines):
                                       '&' in x.group() or  # Remove special characters such as &amp
                                       is_url(x.group()) else x.group(), line)  # Remove urls
         emoji.replace_emoji(line)  # Remove all emoji
+
         words = nltk.tokenize.word_tokenize(line.lower())
-        words = [word for word in words if word not in stop_words]  # remove stopwords before (faulty) lemmatization
-        words = [lemmatizer.lemmatize(word) for word in words if word.isalpha()]
+
+        tagged = nltk.tag.pos_tag(words, tagset='universal')
+
+        words = [lemmatize(word, tag, lemmatizer) for word, tag in tagged if word.isalpha()]
+        words = [word for word in words if word not in stop_words]
         tokens.append(words)
 
     return tokens
