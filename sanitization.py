@@ -54,7 +54,7 @@ def sanitize_tokenize(lines):
     nltk.download('universal_tagset')
 
     stop_words = set(nltk.corpus.stopwords.words('english'))
-    stop_words.update(['u', 'dm'])
+    stop_words.update(['u', 'ur', 'dm'])
     lemmatizer = nltk.stem.WordNetLemmatizer()
 
     tokens = []
