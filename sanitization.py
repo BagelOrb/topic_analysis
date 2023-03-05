@@ -16,22 +16,33 @@ def is_url(word):
     return URL_RE.search(word) is not None
 
 
-def lemmatize(word, tag, lemmatizer):
+def lemmatize(word, tag, lemmatizer, use_nouns_only=True):
+    """
+    Lemmatize a word. E.g. "was"->"be" , "mice"->"mouse".
+
+    Converts the universal tagset to the tags expected by the nltk lemmatizer.
+
+    :param word: The word to lemmatize
+    :param tag: The universal tag of the syntactical function. E.g. 'NOUN', 'VERB'
+    :param lemmatizer: The nltk lemmatizer to use
+    :param use_nouns_only: Whether to return an empty string for anything but a noun
+    :return: the lemmatized word, or '' if not a noun and `use_nouns_only` is True
+    """
     match tag:
         case 'NOUN':
             return lemmatizer.lemmatize(word, 'n')
         case 'VERB':
-            return lemmatizer.lemmatize(word, 'v')
+            return '' if use_nouns_only else lemmatizer.lemmatize(word, 'v')
         case 'ADV':
-            return lemmatizer.lemmatize(word, 'r')
+            return '' if use_nouns_only else lemmatizer.lemmatize(word, 'r')
         case 'ADJ':
-            return lemmatizer.lemmatize(word, 'a')
+            return '' if use_nouns_only else lemmatizer.lemmatize(word, 'a')
         # TODO: what about satellite adjectives? They don't appear in the universal tag set?
         case _:
-            return word
+            return '' if use_nouns_only else word  # Don't lemmatize
 
 
-def sanitize_tokenize(lines):
+def sanitize_tokenize(lines, use_nouns_only=True):
     """
     Remove urls, mentions, email addresses, emoji and empty lines.
     Tokenize the input.
@@ -39,6 +50,7 @@ def sanitize_tokenize(lines):
     TODO: lemmatizes was into wa! Not the best lemmatization
 
     :param lines: List of documents / tweets.
+    :param use_nouns_only: Whether to throw away anything but the nouns
     :return: List of tokens for each line.
     """
 
@@ -71,8 +83,8 @@ def sanitize_tokenize(lines):
 
         tagged = nltk.tag.pos_tag(words, tagset='universal')
 
-        words = [lemmatize(word, tag, lemmatizer) for word, tag in tagged if word.isalpha()]
-        words = [word for word in words if word not in stop_words]
+        words = [lemmatize(word, tag, lemmatizer, use_nouns_only=use_nouns_only) for word, tag in tagged if word.isalpha()]
+        words = [word for word in words if word not in stop_words and word]
         tokens.append(words)
 
     return tokens
