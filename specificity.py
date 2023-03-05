@@ -9,11 +9,14 @@ from functools import reduce
 
 
 class Specificity:
-    '''
-    Get specificity scores for a word based on their frequency in normal language.
-    '''
+    """Get specificity scores for a word based on their frequency in normal language.
+    """
 
     def __init__(self, tokens):
+        """Create a large corpus based on Brown and extra twitter data and extract word frequencies from it
+
+        :param tokens: Extra corpus to extend the Brown and twitter corpus with
+        """
         # Initialize global_tokens
         if os.path.exists('ciphix NLP/global_tokens.pickle'):
             print("loading specificity info")
@@ -78,9 +81,8 @@ class Specificity:
         # local_size = reduce(lambda count, l: count + len(l), tokens, 0)
 
     def word2freq(self, word):
-        """Get the frequency of a word"""
+        """Get the frequency of a `word`"""
         try:
             return self.global_fdist[word]
-            # return local_fdist[word]
         except KeyError:  # word didn't occur in our dataset
             return 1. / self.global_size
