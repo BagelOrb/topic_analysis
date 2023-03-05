@@ -170,7 +170,7 @@ class LDA:
             wc.generate_from_frequencies(word2size)
 
             # Display the word cloud
-            axs[topic_index % grid_size, topic_index // grid_size].imshow(wc, interpolation="bilinear")
+            axs[topic_index // grid_size, topic_index % grid_size].imshow(wc, interpolation="bilinear")
 
         plt.show()
 

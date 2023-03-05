@@ -36,7 +36,8 @@ def main():
     # ============== How to classify a new document
 
     new_lines = ["Good morning, how may we assist you?", "My pants are ripped up and it's all because of company X",
-                 "I'm trying to roll back the last update, but it keeps crashing when I try to start it back up. Somebody please help!"]
+                 "I'm trying to roll back the last update, but it keeps crashing when I try to start it back up. "
+                 "Somebody please help!"]
 
     print("Classifying new lines")
     for new_line in new_lines:
