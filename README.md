@@ -2,8 +2,10 @@
 
 # Topic Analysis
 Simple scripts for performing topic analysis on twitter data.
-I've tried several approaches and various variations on those approaches.
-The most promising approaches are based on Dirichlet distributions, but they suffer from an inherent limitation.
+We explore several approaches and various variations on those approaches.
+The most promising approaches are based on Dirichlet distributions, but they suffer from some inherent limitations.
+
+This document discusses several techniques which can be used for NLP for topic analysis and concludes with some considerations on the dataset and possible directions for future work.
 
 ## Bigrams
 Bigrams could be used to create better tokens in English. Instead of using single words as tokens we can use canonical phrases instead such as 'email address' and 'confirmation number'. This method also extract canonical phrases such as 'could you please' and 'happy to help'.
