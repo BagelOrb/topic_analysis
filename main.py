@@ -13,7 +13,8 @@ def main():
     with open('ciphix NLP/untranslated_data.csv', 'r') as file:
         lines = file.readlines()
 
-    lines = lines[0:len(lines) // 10]
+    lines = lines[0:len(
+        lines) // 10]  # Note that this data is pre-scrambled. Otherwise, use random.sample(text, len(text) // 10)
 
     if os.path.exists('ciphix NLP/tokens.pickle'):
         print("loading tokens")
