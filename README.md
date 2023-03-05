@@ -7,6 +7,14 @@ The most promising approaches are based on Dirichlet distributions, but they suf
 
 This document discusses several techniques which can be used for NLP for topic analysis and concludes with some considerations on the dataset and possible directions for future work.
 
+## Preprocessing
+Before we start analyzing the data we should clean it up.
+We remove emoji, mentions, email addresses and special characters, but not hashtags.
+Then we remove common stop words which won't add any relevant information.
+We lemmatize the words to remove all syntactic information and map the different forms of a word onto the singular present form.
+
+Furthermore we remove all words which aren't nouns. Although this is a rather crude measure, it will exclude words which describe the severity of the problem and the relation of the problem with the customer. Furthermore, we expect the topics to be noun phrases, so performing this step helps with getting the type of topic results we want. However, it should be noted that in a thorough topic analysis we should not remove these words, but use them to determine the syntactic and semantic relationships in the document to determine which words are exactly the main topic and what the severity of the problem is.
+
 ## Bigrams
 Bigrams could be used to create better tokens in English. Instead of using single words as tokens we can use canonical phrases instead such as 'email address' and 'confirmation number'. This method also extract canonical phrases such as 'could you please' and 'happy to help'.
 
@@ -75,6 +83,7 @@ If a topic is prevalent throughout the dataset, we need another dataset to disco
 How many topics would we expect? This depends on what the questioner means by 'topic'. We could divide the data into very general topics like ['discussion', 'complaint', 'inspirational'], or we could divide the data into more specialized topics such as ['games', 'faith', 'science', 'transport', etc.]. The number of topics we expect depends on how we mean to ask the question. We could therefore expect there to be a number of local optima when we try to optimize the number of topics in any topic analysis - each of which would be a valid strategy for answering the question.
 
 What do we want to learn? Analyzing data without asking a specific question is like looking through a haystack not sure if you want to find a needle or a piece of hay. We should always be aware of the company for which we analyze data so that we can interpret what the results of our topic analysis means for that wider context.
+
 
 ## Future work
 Performing a plain topic analysis on the basis of the word frequencies in the documents does not provide satisfactory results.
