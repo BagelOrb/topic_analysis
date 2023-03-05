@@ -140,12 +140,14 @@ class LDA:
 
         plt.show()
 
-    def update(self, corpus, chunksize=None, decay=None, offset=None, passes=None, update_every=None,
+    def update(self, tokens, chunksize=None, decay=None, offset=None, passes=None, update_every=None,
                eval_every=None, iterations=None, gamma_threshold=None, chunks_as_numpy=False):
         """Train on new data
         """
-        # Update LDA with new documents
+        # Create a corpus of the tokens
+        corpus = [self.dictionary.doc2bow(line) for line in tokens]
 
+        # Update LDA with new documents
         self.lda_model.update(corpus, chunksize=chunksize, decay=decay, offset=offset, passes=passes,
                               update_every=update_every, eval_every=eval_every, iterations=iterations,
                               gamma_threshold=gamma_threshold, chunks_as_numpy=chunks_as_numpy)

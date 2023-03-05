@@ -4,7 +4,6 @@ import pickle
 import os.path
 from lda import LDA
 
-
 # Read the CSV file and extract the text data
 print("Loading data...")
 with open('ciphix NLP/untranslated_data.csv', 'r') as file:
@@ -29,3 +28,26 @@ print("Getting top topics")
 lda.print_top_topics(lines, tokens)
 
 lda.visualize_topics()
+
+# ==============
+
+new_lines = ["Good morning, how may we assist you?", "My pants are ripped up and it's all because of company X",
+             "I'm trying to roll back the last update, but it keeps crashing when I try to start it back up. Somebody please help!"]
+
+print("Classifying new lines")
+for new_line in new_lines:
+    topic_id = lda.classify(new_line)
+    print('')
+    print(new_line)
+    lda.print_topic(topic_id)
+
+
+# ==============
+
+print("Performing update")
+new_tokens = sanitization.sanitize_tokenize(new_lines)
+
+lda.update(new_tokens)
+
+print("Getting top topics")
+lda.print_top_topics(lines, tokens)
