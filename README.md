@@ -77,7 +77,7 @@ How many topics would we expect? This depends on what the questioner means by 't
 What do we want to learn? Analyzing data without asking a specific question is like looking through a haystack not sure if you want to find a needle or a piece of hay. We should always be aware of the company for which we analyze data so that we can interpret what the results of our topic analysis means for that wider context.
 
 ## Future work
-Performing a plain topic analysis on the basis of the words used in the documents does not provide satisfactory results.
+Performing a plain topic analysis on the basis of the word frequencies in the documents does not provide satisfactory results.
 
 For example, when we employ topic analysis on a dataset of customer service data the most prevalent topics will revolve around concepts such as 'help', 'problem' and 'sorry'. However, those topics were to be expected, since the dataset is on customer service data. These topics aren't insightful to the company.
 
