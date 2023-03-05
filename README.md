@@ -12,15 +12,15 @@ While amending the tokenization with these phrases could improve the readability
 
 It might be worth revisiting this idea.
 
-## Term Frequency - Inverse Document Frquency
-The TF-IDF score can help in classifying documents, but it seems that it is not particularly well suited for tweets and better suited for longer documents such as articles. In longer articles it is more likely that terms will occur morre than once and that these terms are highly significant for the topic of the document, whereas in tweets most often words only appear once. The TF-IDF score of tweets is also dominated by the length of the tweet, since the frequency of terms is their occurrence divided by the total length of the document. 
+## Term Frequency - Inverse Document Frequency
+The TF-IDF score can help in classifying documents, but it seems that it is not particularly well suited for tweets and better suited for longer documents such as articles. In longer articles it is more likely that terms will occur more than once and that these terms are highly significant for the topic of the document, whereas in tweets most often words only appear once. The TF-IDF score of tweets is also dominated by the length of the tweet, since the frequency of terms is their occurrence divided by the total length of the document. 
 
 A topic analysis technique based on TF-IDF might be interesting for the analysis of longer documents, but for short documents such as tweets the score does not constitute a meaningful indicator.
 
 ## Specificity and stop words
 When performing common topic analysis techniques on unprocessed data one will often find that needlessly much time is spent on meaningless words such as 'the' and 'to'. A common technique for dealing with this is filtering out those *stop words*.
 
-However, this approach only shifts the problem to the slightly less meaningless words. According to Zipf's law the frequency of usage of a word is inversely proportional to its rank. I submit that the meaningfulness of a word is also inversely proportional to its usage. The less a word is used to more specific it is, and therfore the more significant it is for defining a topic.
+However, this approach only shifts the problem to the slightly less meaningless words. According to Zipf's law the frequency of usage of a word is inversely proportional to its rank. I submit that the meaningfulness of a word is also inversely proportional to its usage. The less a word is used to more specific it is, and therefore the more significant it is for defining a topic.
 
 One way of implementing this in our topic analysis methods is by weighing sample words or resulting topic words by their frequency $f$:
 
@@ -50,13 +50,13 @@ While performing clustering on the individual words rather than the documents is
 
 We could pick some words with a high specificity close to the cluster center, but that doesn't capture the extent of the cluster - it only captures the center.
 
-Moreover, while word2vec should map words which are similar to nearby locations in the space, no guarantee is given as to whether more unrelated words are farther away from each other. The mapped space can be highly hetergeneous, with a high amount of topic changes over an intermediate distance. Furthermore, the word2vec mapping obscures the interpretability of our eventual topics, since the mapping does not have a straightforward interpretation.
+Moreover, while word2vec should map words which are similar to nearby locations in the space, no guarantee is given as to whether more unrelated words are farther away from each other. The mapped space can be highly heterogeneous, with a high amount of topic changes over an intermediate distance. Furthermore, the word2vec mapping obscures the interpretability of our eventual topics, since the mapping does not have a straightforward interpretation.
 
 ## Latent Dirichlet Allocation
-LDA models a document as an unstructured bag of words belonging to several categories. An LDA will be optimized such that the topic fraquencies and their word frequencies accurately portray frequency of words in the documents. The result is a set of topics which consist of an assignment of a probability $P(word|topic)$ to each word in the dictionary. As such it doesn't consider the word order and therefore ignores all meaning that arises through grammar.
+LDA models a document as an unstructured bag of words belonging to several categories. An LDA will be optimized such that the topic frequencies and their word frequencies accurately portray frequency of words in the documents. The result is a set of topics which consist of an assignment of a probability $P(word|topic)$ to each word in the dictionary. As such it doesn't consider the word order and therefore ignores all meaning that arises through grammar.
 
 For LDA we choose a predetermined number of topics and display the 10 most relevant ones. For each topic we display, we display the most relevant words for that topic. 
-Some words are highly probable in any topic, such as 'try' or 'reply', so looking at these probablities without considering their specificity isn't very productive. That's why we order the words on a score based on their probability and their specificity instead and display only the most relevant ones.
+Some words are highly probable in any topic, such as 'try' or 'reply', so looking at these probabilities without considering their specificity isn't very productive. That's why we order the words on a score based on their probability and their specificity instead and display only the most relevant ones.
 
 However, often the most relevant/specific words of an LDA topic don't constitute what a layman would call a topic. The semantic coherence between the words is often obscure and it takes effort to see what links these words together - if there is a pattern at all.
 
@@ -68,9 +68,9 @@ An HDP is similar to an LDA, but the number of topics is determined by optimizat
 It therefore suffers from the same limitations as mentioned above.
 
 ## Dataset considerations
-If a topic is prevalent throughout the dataset, we need another dataset to discover that fact. If most documents are about customer service than this fact might be interesting or not, depending on whether the dataset was specifically chosen from customer service data or not. The fact that most data is about costomer service might be news to the company. It might therefore be interesting to compare the dataset to other data in order to find out which topics are prevalent in the datasat which aren't prevalent in other data.
+If a topic is prevalent throughout the dataset, we need another dataset to discover that fact. If most documents are about customer service than this fact might be interesting or not, depending on whether the dataset was specifically chosen from customer service data or not. The fact that most data is about customer service might be news to the company. It might therefore be interesting to compare the dataset to other data in order to find out which topics are prevalent in the datasat which aren't prevalent in other data.
 
-How many topics would we expect? This depends on what the questioner means by 'topic'. We could divide the data into very general topics like ['discussion', 'complaint', 'inspirational'], or we could divide the data into more specialized topics such as ['games', 'faith', 'science', 'transport', etc.]. The number of topics we expect depends on how we mean to ask the question. We could therefore expect there to be a number of local optima when we try to optimize the number of topics in any topic analysis - each of which would be a valid strategy for answering the qeustion.
+How many topics would we expect? This depends on what the questioner means by 'topic'. We could divide the data into very general topics like ['discussion', 'complaint', 'inspirational'], or we could divide the data into more specialized topics such as ['games', 'faith', 'science', 'transport', etc.]. The number of topics we expect depends on how we mean to ask the question. We could therefore expect there to be a number of local optima when we try to optimize the number of topics in any topic analysis - each of which would be a valid strategy for answering the question.
 
 What do we want to learn? Analyzing data without asking a specific question is like looking through a haystack not sure if you want to find a needle or a piece of hay. We should always be aware of the company for which we analyze data so that we can interpret what the results of our topic analysis means for that wider context.
 
@@ -87,6 +87,6 @@ Besides those, some technical jargon might be required in order to determine wha
 
 Often a company wants to know what are the *current* talking points. In order to bias the results more toward recent topics we might weigh the documents by the inverse of their age, or leave out all documents older than some given data. Since in production we would need to continually update the model with newer information it might make sense to use a weighted moving average.
 
-Some other interestign directions to analyze the twitter data is to process emoji, mentions and hashtags. Performign a sentiment analysis can help to determine which topics are more pressing than others.
+Some other interesting directions to analyze the twitter data is to process emoji, mentions and hashtags. Performing a sentiment analysis can help to determine which topics are more pressing than others.
 
 Besides more involved techniques for performing topic analysis, we might also want to have more data. Tweets can be annotated using the user name, time and date,  Furthermore, in order to get a clear view of the company needs and type of data in the dataset it might be useful to have an in depth conversation with a representative.
