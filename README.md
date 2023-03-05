@@ -73,3 +73,20 @@ If a topic is prevalent throughout the dataset, we need another dataset to disco
 How many topics would we expect? This depends on what the questioner means by 'topic'. We could divide the data into very general topics like ['discussion', 'complaint', 'inspirational'], or we could divide the data into more specialized topics such as ['games', 'faith', 'science', 'transport', etc.]. The number of topics we expect depends on how we mean to ask the question. We could therefore expect there to be a number of local optima when we try to optimize the number of topics in any topic analysis - each of which would be a valid strategy for answering the qeustion.
 
 What do we want to learn? Analyzing data without asking a specific question is like looking through a haystack not sure if you want to find a needle or a piece of hay. We should always be aware of the company for which we analyze data so that we can interpret what the results of our topic analysis means for that wider context.
+
+## Future work
+Performing a plain topic analysis on the basis of the words used in the documents does not provide satisfactory results.
+
+For example, when we employ topic analysis on a dataset of customer service data the most prevalent topics will revolve around concepts such as 'help', 'problem' and 'sorry'. However, those topics were to be expected, since the dataset is on customer service data. These topics aren't insightful to the company.
+
+Furthermore, finding out what the subjects are with which people are having problems requires a syntactic and/or semantic understanding of a document beyond word occurrence frequency.
+
+The syntactic information is crucially required to disambiguate "The wifi is working. I don't need help." from "The wifi isn't working. I need help." However, parsing the documents is beyond the scope of this project.
+
+Besides those, some technical jargon might be required in order to determine what are the different synonyms of a word, which can depend on the field and subject matter of the dataset. With enough data such synonyms could be automatically extracted, but input from a field expert might be required to verify those synonyms.
+
+Often a company wants to know what are the *current* talking points. In order to bias the results more toward recent topics we might weigh the documents by the inverse of their age, or leave out all documents older than some given data. Since in production we would need to continually update the model with newer information it might make sense to use a weighted moving average.
+
+Some other interestign directions to analyze the twitter data is to process emoji, mentions and hashtags. Performign a sentiment analysis can help to determine which topics are more pressing than others.
+
+Besides more involved techniques for performing topic analysis, we might also want to have more data. Tweets can be annotated using the user name, time and date,  Furthermore, in order to get a clear view of the company needs and type of data in the dataset it might be useful to have an in depth conversation with a representative.
